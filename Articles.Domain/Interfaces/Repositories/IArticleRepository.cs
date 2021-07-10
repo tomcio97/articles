@@ -11,7 +11,7 @@ namespace Articles.Domain.Interfaces.Repositories
     {
         IQueryable<Article> GetArticles();
         Task<Article> GetArticleById(int articleId);
-        Task CreateArticle(Article article);
+        Task<bool> CreateArticle(Article article);
         Task<bool> DeleteArticle(Article article);
     }
 }

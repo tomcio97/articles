@@ -9,7 +9,6 @@ namespace Articles.Application.Articles.Command
 {
     public class CreateArticleCommand : IRequest<int>
     {
-        public int ArticleId { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
     }

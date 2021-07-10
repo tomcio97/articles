@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Articles.Domain.Interfaces.Repositories;
@@ -15,11 +16,11 @@ namespace Articles.Infrastructure.Repositories
         {
             this.dbContext = dbContext;
         }
-        public async Task CreateArticle(Article article)
+        public async Task<bool> CreateArticle(Article article)
         {
             dbContext.Add(article);
 
-            await dbContext.SaveChangesAsync();
+            return await dbContext.SaveChangesAsync() > 0;
 
         }
 

@@ -22,7 +22,6 @@ namespace Articles.Application.Articles.Command
         {
             var article = new Article()
             {
-                ArticleId = request.ArticleId,
                 Title = request.Title,
                 Content = request.Content
             };

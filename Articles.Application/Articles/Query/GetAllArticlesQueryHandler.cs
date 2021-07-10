@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Articles.Application.Articles.Query
 {
-    class GetAllArticlesQueryHandler : IRequestHandler<GetAllArticlesQuery, IEnumerable<Article>>
+    public class GetAllArticlesQueryHandler : IRequestHandler<GetAllArticlesQuery, List<Article>>
     {
         private readonly IArticleRepository articleRepository;
 
@@ -19,7 +19,7 @@ namespace Articles.Application.Articles.Query
         {
             this.articleRepository = articleRepository;
         }
-        public async Task<IEnumerable<Article>> Handle(GetAllArticlesQuery request, CancellationToken cancellationToken)
+        public async Task<List<Article>> Handle(GetAllArticlesQuery request, CancellationToken cancellationToken)
         {
             var articles = await articleRepository.GetArticles().ToListAsync();
 

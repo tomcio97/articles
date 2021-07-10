@@ -8,7 +8,7 @@ using Articles.Domain.Models;
 
 namespace Articles.Application.Articles.Query
 {
-    public class GetAllArticlesQuery : IRequest<IEnumerable<Article>> // zamiast Article powinno być jakieś DTO
+    public class GetAllArticlesQuery : IRequest<List<Article>> // zamiast Article powinno być jakieś DTO
     {
     }
 }
