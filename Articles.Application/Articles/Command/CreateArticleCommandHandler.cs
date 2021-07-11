@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Articles.Application.Exceptions;
 using Articles.Domain.Interfaces.Repositories;
 using Articles.Domain.Models;
 using MediatR;
@@ -25,6 +26,11 @@ namespace Articles.Application.Articles.Command
                 Title = request.Title,
                 Content = request.Content
             };
+
+            if (articleRepository.ExistArticle(article))
+            {
+                throw new BadRequestException("Article this title exists");
+            }
 
              await articleRepository.CreateArticle(article);
 

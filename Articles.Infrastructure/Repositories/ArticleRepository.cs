@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Articles.Domain.Interfaces.Repositories;
@@ -29,6 +28,11 @@ namespace Articles.Infrastructure.Repositories
             dbContext.Remove(article);
 
             return await dbContext.SaveChangesAsync() > 0;
+        }
+
+        public bool ExistArticle(Article article)
+        {
+            return dbContext.Articles.Any(x => x.Title == article.Title);
         }
 
         public async Task<Article> GetArticleById(int articleId)

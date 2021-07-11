@@ -13,5 +13,6 @@ namespace Articles.Domain.Interfaces.Repositories
         Task<Article> GetArticleById(int articleId);
         Task<bool> CreateArticle(Article article);
         Task<bool> DeleteArticle(Article article);
+        bool ExistArticle(Article article);
     }
 }

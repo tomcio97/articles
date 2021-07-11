@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Articles.Application.Articles.Query;
+using Articles.Application.Exceptions;
 using Articles.Domain.Interfaces.Repositories;
 using Articles.Domain.Models;
 using Articles.Infrastructure;
@@ -35,7 +37,7 @@ namespace Articles.Test.Application
         }
 
         [Fact]
-        public async Task Handle_GetArticleById_NotExistArticle()
+        public void Handle_GetArticleById_NotExistArticle()
         {
             using var context = new ApplicationDbContext(dbContextOptions);
 
@@ -45,9 +47,9 @@ namespace Articles.Test.Application
 
             var handler = new GetArticlesByIdQueryHandler(mock.Object);
 
-            var result = await handler.Handle(new GetArticlesByIdQuery() { ArticleId = defualtId }, default);
+            Func<Task<Article>> handle = () => handler.Handle(new GetArticlesByIdQuery() { ArticleId = defualtId }, default);
 
-            result.Should().BeNull();
+            handle.Should().Throw<NotFoundException>();
         }
     }
 }

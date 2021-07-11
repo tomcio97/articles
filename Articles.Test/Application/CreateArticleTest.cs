@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Articles.Application.Articles.Command;
+using Articles.Application.Exceptions;
 using Articles.Domain.Interfaces.Repositories;
 using Articles.Domain.Models;
 using Articles.Infrastructure;
-using Articles.Infrastructure.Repositories;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -30,7 +30,7 @@ namespace Articles.Test.Application
                 context.Add(article);
                 return context.SaveChanges() > 0;
             });
-
+            mock.Setup(repo => repo.ExistArticle(It.IsAny<Article>())).Returns(false);
             var countAllArticlesBeforeAdd = context.Articles.Count();
 
            
@@ -44,5 +44,31 @@ namespace Articles.Test.Application
             countAllArticlesAfterAdd.Should().NotBe(countAllArticlesBeforeAdd);
             result.Should().Be(6);
         }
+
+
+        [Fact]
+        public void Handle_CreateArticle_ArticleExist()
+        {
+            using var context = new ApplicationDbContext(dbContextOptions);
+
+            var mock = new Mock<IArticleRepository>();
+            mock.Setup(repo => repo.CreateArticle(It.IsAny<Article>())).ReturnsAsync((Article article) => {
+
+                context.Add(article);
+                return context.SaveChanges() > 0;
+            });
+            mock.Setup(repo => repo.ExistArticle(It.IsAny<Article>())).Returns(true);
+            var countAllArticlesBeforeAdd = context.Articles.Count();
+
+
+
+            var handler = new CreateArticleCommandHandler(mock.Object);
+
+            Func<Task<int>> handle = () => handler.Handle(new CreateArticleCommand() { Title = "Article6", Content = "Article6lalalal" }, default);
+
+            handle.Should().Throw<BadRequestException>();
+
+        }
+
     }
 }
